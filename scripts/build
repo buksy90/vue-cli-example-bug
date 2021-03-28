@@ -1,0 +1,17 @@
+#!/bin/bash
+
+echo "Building UI"
+
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+docker container stop vue-cli-example-container
+docker container rm vue-cli-example-container
+
+cd $DIR/..
+docker build -t vue-cli-example $DIR/.. -f $DIR/../Dockerfile
+docker create --name vue-cli-example-container vue-cli-example
+
+echo "Removin old dist folder"
+rm $DIR/../dist -rf
+
+
